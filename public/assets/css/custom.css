@@ -16,5 +16,5 @@
 }
 .required:after {
     content: " *" ;
-    color: #e40000;
+    color: #e10000;
 }
