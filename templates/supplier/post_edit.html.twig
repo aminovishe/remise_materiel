@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fournisseur{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock stylesheets %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card card-custom gutter-b">
+                <div class="card-header flex-wrap py-3">
+                    <div class="card-title">
+                        <h3 class="card-label">{{ supplier.id ? "Modification" : "Nouveau" }}</h3>
+                    </div>
+                    <div class="card-toolbar"></div>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.ref) }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.nom) }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.address) }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.postalCode) }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.city) }}
+                        </div>
+                        <div class="col-12">
+                            {{ form_row(form.country) }}
+                        </div>
+                        <div class="col-12 text-right">
+                            {{ form_row(form.save) }}
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+{% endblock %}

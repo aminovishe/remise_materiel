@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock stylesheets %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card card-custom card-stretch">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">Générer une remise de matériel</h3>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="numOF" class="required">Numéro OF</label>
+                                <input type="text" id="numOF" required="required" class="form-control" value="M">
+                            </div>
+                        </div>
+                        <div class="col-12 text-right">
+                            <div class="form-group">
+                                <button type="button" id="generate" class="btn btn-primary btn">Générer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script>
+        $('#generate').on('click', function () {
+            let numOF = $('#numOF').val();
+            if (numOF.length >= 7 && (numOF.charAt(0)).toUpperCase() === "M" ) {
+                let url = "{{ path('generate_remise_materiel', { 'numOF' : "__numOF" }) }}";
+                window.open(url.replace("__numOF", numOF),'_blank');
+            } else {
+                Swal.fire({
+                    text: "Numéro OF invalide !!",
+                    icon: 'error',
+                    confirmButtonText: 'Fermer'
+                });
+            }
+        });
+        $('input#numOF').keydown(function (e) {
+            var buttonPressed = event.keyCode;
+            if (buttonPressed === 13) {
+                $('#generate').trigger('click');
+            }
+        });
+    </script>
+
+{% endblock %}

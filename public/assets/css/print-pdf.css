@@ -1,0 +1,133 @@
+* {
+    margin: 0;
+    padding: 0;
+    color: black !important;
+}
+
+body {
+    font-size: 9px !important;
+    font-family: Arial, sans-serif, serif;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: start;
+    width: 100% !important;
+}
+
+@page {
+    size: A4;
+    margin: 2px;
+}
+
+#page-wrap {
+    margin-top: 10px;
+    width: 47%;
+}
+
+textarea {
+    border: 0;
+    overflow: hidden;
+    resize: none;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table td, table th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+textarea {
+    width: 100% !important;
+    font-size: 1em !important;
+}
+
+#itemsContent {
+    border: 1px solid black;
+    margin-top: 15px;
+}
+
+#itemsContent textarea {
+    height: 26px !important;
+}
+
+#items {
+    clear: both;
+    width: 100%;
+    margin: 0;
+}
+
+#items th {
+    background: #eee;
+}
+
+#items textarea {
+    width: 80px;
+    height: 50px;
+}
+
+#items tr.item-row td {
+    border: 0;
+    vertical-align: top;
+}
+
+#items td.description {
+    width: 300px;
+}
+
+#items td.item-name {
+    width: 175px;
+}
+
+#items td.total-line {
+    border-right: 0;
+    text-align: right;
+}
+
+#items td.total-value {
+    border-left: 0;
+    padding: 10px;
+}
+
+#items td.total-value textarea {
+    background: none;
+}
+
+#items td.balance {
+    background: #eee;
+}
+
+#items td.blank {
+    border: 0;
+}
+
+#terms {
+    text-align: center;
+    margin: 20px 0 0 0;
+}
+
+#terms h5 {
+    text-transform: uppercase;
+    font: 13px Helvetica, Sans-Serif;
+    letter-spacing: 10px;
+    border-bottom: 1px solid black;
+    padding: 0 0 8px 0;
+    margin: 0 0 8px 0;
+}
+
+textarea {
+    text-align: center;
+}
+
+textarea:hover, textarea:focus, #items td.total-value textarea:hover, #items td.total-value textarea:focus, .delete:hover {
+    background-color: #EEFF88;
+}
+
+@media print {
+    @page {
+        size: landscape;
+    }
+}

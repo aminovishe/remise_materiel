@@ -1,0 +1,35 @@
+# Latest documentation available at https://omines.github.io/datatables-bundle/#configuration
+datatables:
+    # Set options, as documented at https://datatables.net/reference/option/
+    options:
+        lengthMenu : [[5, 10, 50, 100, -1], [5, 10, 50, 100, "Tous"]]
+        pageLength: 10
+        dom: "lftipr"
+        searching: true
+
+    # Load i18n data from DataTables CDN or locally
+    language_from_cdn:    false
+
+    # Default HTTP method to be used for callbacks
+    method:               GET # One of "GET"; "POST"
+
+    # Where to persist the current table state automatically
+    persist_state:        session # One of "none"; "query"; "fragment"; "local"; "session"
+
+    # Default service used to render templates, built-in TwigRenderer uses global Twig environment
+    renderer:             Omines\DataTablesBundle\Twig\TwigRenderer
+
+    # Default template to be used for DataTables HTML
+    template:             '@DataTables/datatable_html.html.twig'
+
+    # Default parameters to be passed to the template
+    template_parameters:
+
+        # Default class attribute to apply to the root table elements
+        className:        'omines table table-striped- table-bordered table-hover responsive no-wrap'
+
+        # If and where to enable the DataTables Filter module
+        columnFilter:     "thead" # One of "thead"; "tfoot"; "both"; null
+
+    # Default translation domain to be used
+    translation_domain:   messages

@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Remise de matériel</title>
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/print-pdf.css') }}" type="text/css" rel="stylesheet"/>
+
+    <style type="text/css" media="print">
+        #btn-print{
+            display:none;
+        }
+    </style>
+</head>
+
+<body>
+
+<button id="btn-print">Imprimer</button>
+
+<div id="page-wrap">
+
+    <div id="header" style="display: flex; flex-direction: row; justify-content: start; align-items: start; flex-wrap: wrap;">
+        <table width="60%" style="height: 313px;">
+            <tr>
+                <th>EMETEUR :</th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="text-center">
+                        <h3 class="font-weight-bolder">Etablissement CATU</h3>
+                        <p class="m-0">Société Anonyme au Capital de 1 955 360 Euros</p>
+                        <h6 class="m-0">10 à 18, Avenue Jean-Jaurès - 92222 BAGNEUX Cedex</h6>
+                        <hr width="10%" class="mr-auto ml-auto mt-1 mb-1" style="border-color: black;">
+                        <p class="m-0">Téléphone : 01 42 31 46 00</p>
+                        <p class="m-0">BOITE POSTALE N°2</p>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>DESTINATAIRE : </th>
+            </tr>
+            <tr>
+                <td>
+                    <div class="text-center">
+                        <textarea class="w-100 font-weight-bolder" style="text-align: center !important; font-size: 1.8em !important;height: 2em !important;">{{ supplier.nom }}</textarea>
+                        <textarea class="w-100" style="text-align: center !important;font-size: 1.4em !important;">{{ supplier.address }}, {{ supplier.postalCode }} {{ supplier.city }}{{ supplier.country ? ", " ~ supplier.country : "" }}</textarea>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table width="40%" style="height: 313px;">
+            <tr>
+                <th>REMISE DE MATERIEL :</th>
+            </tr>
+            <tr>
+                <th><h3 class="font-weight-bolder text-center">N° {{ numRMST }}</h3></th>
+            </tr>
+            <tr>
+                <th>DOSSIER DE FABRICATION :</th>
+            </tr>
+            <tr>
+                <th><textarea style="text-align: center !important; font-size: 2em !important;height: 2em !important;" class="w-100">{{ numOf }}</textarea></th>
+            </tr>
+            <tr>
+                <th>COMMANDE FOURNISSEUR :</th>
+            </tr>
+            <tr>
+                <th><textarea style="text-align: center !important; font-size: 2em !important;height: 2em !important;" class="w-100">P554221</textarea></th>
+            </tr>
+        </table>
+        <table width="100%">
+            <tr>
+                <th>SERVICE EMETTEUR</th>
+                <th>DATE EMISSION</th>
+                <th>OPERATION A EFFECTUER</th>
+            </tr>
+            <tr>
+                <td><textarea class="w-100" style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">GP</textarea></td>
+                <td><textarea class="w-100" style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">{{ "now" | date('d/m/Y') }}</textarea></td>
+                <td><textarea class="w-100" style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">Sous-traitance (ST)</textarea></td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div id="itemsContent">
+        <table id="items">
+            <tr>
+                <th width="15%" class="text-center">RÉFÉRENCE AU DEPART</th>
+                <th width="40%" class="text-center">DÉSIGNATION</th>
+                <th width="15%" class="text-center">QUANTITÉ</th>
+                <th width="15%" class="text-center">RÉFÉRENCE AU RETOUR</th>
+                <th class="text-center">OBSERVATION</th>
+            </tr>
+            {% set nbLines = 0 %}
+            {% for data in datas %}
+                {% if not data.is_st_ref %}
+                    <tr class="item-row">
+                        <td><textarea >{{ data.composantRef }}</textarea></td>
+                        <td><textarea class="text-left">{{ data.description }}</textarea></td>
+                        <td><textarea>{{ data.quantityPerUnit * data.produitFiniQuantity }}</textarea></td>
+                        <td><textarea>{{ nbLines == 0 ? data.produitFini : '' }}</textarea></td>
+                        <td><textarea></textarea></td>
+                    </tr>
+                    {% set nbLines = nbLines + 1 %}
+                {% endif %}
+            {% endfor %}
+
+            {% for i in nbLines..6 %}
+                <tr class="item-row">
+                    <td><textarea></textarea></td>
+                    <td><textarea class="text-left"></textarea></td>
+                    <td><textarea></textarea></td>
+                    <td><textarea></textarea></td>
+                    <td><textarea></textarea></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div id="footer">
+        <p class="font-weight-bolder m-1">NB. - Une sortie par RM solde l'affectation correspondante</p>
+        <table width="100%">
+            <tr>
+                <th>VISA DU RESPONSABLE</th>
+                <th>MATÉRIEL REMIS LE</th>
+                <th>VISA DU FAÇONNIER</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <p></p>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <div class="w-50">Nombre d'articles :</div>
+                        <div class="d-inline w-50"><textarea style="height: 20px;font-weight: bold;">{{ nbLines }}</textarea></div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+
+<script>
+    $(document).on("click", "#btn-print", function () {
+        $('#page-wrap.page2').remove();
+        var elem = $("#page-wrap");
+        var elem2 = $(elem).clone(true);
+        $(elem2).addClass('page2');
+        $('body').append(elem2);
+
+        window.print();
+    });
+</script>
+
+</body>
+
+</html>

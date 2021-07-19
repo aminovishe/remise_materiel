@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des fournisseurs{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+    <link href="{{ asset('assets/plugins/datatables/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+
+{% endblock stylesheets %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-custom gutter-b">
+                <div class="card-header flex-wrap py-3">
+                    <div class="card-title">
+                        <h3 class="card-label">Liste des fournisseurs</h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <a href="{{ path('supplier_post_edit') }}" class="btn btn-primary font-weight-bolder">
+                            <i class="fas fa-user-plus"></i>Nouvelle adresse</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div id="kt_datatable" class="table omni-datatable table-responsive">Chargement...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script type="text/javascript" src="{{ asset('assets/plugins/datatables/datatables.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('assets/plugins/datatables/datatables.bundle.js') }}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#kt_datatable').initDataTables({{ datatable_settings(datatable) }}, {
+                searching: true,
+                dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                language: {
+                    url: "{{ asset('assets/plugins/datatables/datatable-french.json') }}"
+                }
+            })
+        });
+    </script>
+
+{% endblock %}

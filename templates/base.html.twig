@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Remise de matériel</title>
+    <meta name="description" content="CATU relance fournisseurs"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}"/>
+        <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/plugins/sweetAlert2/sweetalert2.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="{{ asset('assets/media/logos/favicon-catu.ico') }}"/>
+    {% endblock %}
+</head>
+
+{% use "bootstrap_4_layout.html.twig" %}
+
+<body id="kt_body" class="subheader-enabled subheader-fixed page-loading">
+<div id="loading-bar-spinner"><img src="{{ asset('assets/media/loading.gif') }}" alt="loading"/></div>
+<div class="d-flex flex-column flex-root">
+    <div class="d-flex flex-row flex-column-fluid page">
+        <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper" style="padding-top: 50px;">
+            <div id="kt_header" class="header header-fixed">
+                <div class="container-fluid d-flex align-items-stretch justify-content-between">
+                    <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+                        <div id="kt_header_menu" class="header-menu header-menu-mobile header-menu-layout-default">
+                            <ul class="menu-nav">
+                                <li class="menu-item" aria-haspopup="true">
+                                    <h1 class="font-weight-boldest">Remise de matériel</h1>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="topbar">
+                        <div class="topbar-item ml-3">
+                            <div class="btn-group">
+                                <a href="{{ path('home') }}" class="btn btn-secondary btn-sm mr-3">Remise de matériel</a>
+                            </div>
+                        </div>
+                        <div class="topbar-item ml-3">
+                            <div class="btn-group">
+                                <a href="{{ path('supplier_list') }}" class="btn btn-secondary btn-sm mr-3">Liste des fournisseurs</a>
+                            </div>
+                        </div>
+                        <div class="topbar-item ml-3">
+                            <div class="btn-group">
+                                <button id="profileBtn" type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Bonjour, CATU</button>
+                                <div class="dropdown-menu" aria-labelledby="profileBtn">
+                                    <a class="dropdown-item" href="{{ path('update_password_powerlink') }}"><i class="icon-xl fas fa-lock mr-2"></i> Modifier Mot de passe Power-Link</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+                <div class="d-flex flex-column-fluid">
+                    <div class="container">
+                        {% block body %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+            <div class="footer bg-white py-4 d-flex flex-lg-column" id="kt_footer">
+                <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
+                    <div class="text-dark order-2 order-md-1">
+                        <span class="text-muted font-weight-bold mr-2">v {{ app_version }} | 2021©</span>
+                        <a href="https://www.catuelec.com/" target="_blank"
+                           class="text-dark-75 text-hover-primary">CATU</a>
+                    </div>
+                    <div class="text-dark order-2 order-md-1">
+                        <span class="text-muted font-weight-bold mr-2">Developed by</span>
+                        <a href="https://www.linkedin.com/in/hadrich-mohamedamin/" target="_blank"
+                           class="text-dark-75 text-hover-primary">M. A. HADRICH</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block javascripts %}
+
+    <script src="{{ asset('assets/js/KTAppSettings.js') }}"></script>
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/prismjs/prismjs.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
+    <script src="{{ asset('assets/plugins/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/sweetAlert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
+
+    <script>
+        {% for message in app.flashes('error') %}
+        Swal.fire({
+            text: "{{ message }}",
+            icon: 'error',
+            confirmButtonText: 'Fermer'
+        });
+        {% endfor %}
+        {% for message in app.flashes('success') %}
+        Swal.fire({
+            text: "{{ message }}",
+            icon: 'success',
+            confirmButtonText: 'Fermer'
+        });
+        {% endfor %}
+    </script>
+
+{% endblock %}
+
+</body>
+</html>

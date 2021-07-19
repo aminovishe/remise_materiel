@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Infor XA Power-Link{% endblock %}
+
+{% block stylesheets %}
+
+    {{ parent() }}
+
+{% endblock stylesheets %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card card-custom gutter-b">
+                <div class="card-header flex-wrap py-3">
+                    <div class="card-title">
+                        <h3 class="card-label">Mettre à jour du mot de passe Infor XA Power-Link</h3>
+                    </div>
+                    <div class="card-toolbar"></div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-3 col-md-12">
+                            {{ form_start(form) }}
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ form_row(form.userId) }}
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        {{ form_label(form.password) }}
+                                        {{ form_widget(form.password) }}
+                                        <span class="form-text text-muted">Mot de passe actuel : <b>{{ powerlinkParams.password }}</b></span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    {{ form_row(form.save) }}
+                                </div>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+{% endblock %}
