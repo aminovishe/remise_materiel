@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Remise de matériel</title>
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('assets/css/print-pdf.css') }}" type="text/css" rel="stylesheet"/>
+</head>
+
+<body>
+
+<div id="page-wrap">
+
+    <div id="header">
+        <table width="100%">
+            <tr>
+                <td colspan="2" width="50%">
+                    <div>
+                        <h1 class="font-weight-bolder">Etablissement CATU</h1>
+                        <p>Société Anonyme au Capital de 1 955 360 Euros</p>
+                        <h5>10 à 18, Avenue Jean-Jaurès - 92222 BAGNEUX Cedex</h5>
+                        <hr width="10%" class="mr-auto ml-auto" style="border-color: black;">
+                        <p>Téléphone : 01 42 31 46 00</p>
+                        <p>BOITE POSTALE N°2</p>
+                    </div>
+                </td>
+                <td colspan="2" width="50%">
+                    <div>
+                        <h1 class="font-weight-boldest">REMISE DE MATÉRIEL</h1>
+                        <h3 class="font-weight-bolder font-italic">POUR USINAGE OU MONTAGE</h3>
+                        <h2 class="font-weight-bold">AVEC CHANGEMENT DE RÉFÉRENCE</h2>
+                        <hr style="border: 1.2px solid black; background-color: black;">
+                        <h1 class="font-weight-boldest" style="font-size: 3rem!important;">RM / ST N° {{ numRMST }}</h1>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>SERVICE EMETTEUR</th>
+                <th>DATE EMISSION</th>
+                <th>N° DM ou DAS</th>
+                <th>N° DOSSIER FABRICATION</th>
+            </tr>
+            <tr>
+                <td><textarea class="w-100">GP</textarea></td>
+                <td><textarea class="w-100">{{ "now" | date('d/m/Y') }}</textarea></td>
+                <td><textarea class="w-100"></textarea></td>
+                <td><textarea class="w-100">{{ numOf }}</textarea></td>
+            </tr>
+            <tr>
+                <th style="border-right: none !important;">DESTINATAIRE</th>
+                <td colspan="3" style="border-left: none !important;">
+                    <textarea class="w-100" style="text-align: left !important;">{{ supplier.nom }}&#13;&#10;{{ supplier.address }}, {{ supplier.postalCode }} {{ supplier.city }}{{ supplier.country ? ", " ~ supplier.country : "" }}</textarea>
+                </td>
+            </tr>
+            <tr>
+                <th>N° COMMANDE</th>
+                <th colspan="3">OPÉRATION A EFFETUER</th>
+            </tr>
+            <tr>
+                <td><textarea class="w-100"></textarea></td>
+                <td colspan="3"><textarea class="w-100">Sous-traitance (ST)</textarea></td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div id="itemsContent">
+        <table id="items">
+            <tr>
+                <th width="15%" class="text-center">RÉFÉRENCE AU DEPART</th>
+                <th width="40%" class="text-center">DÉSIGNATION</th>
+                <th width="15%" class="text-center">QUANTITÉ</th>
+                <th width="15%" class="text-center">RÉFÉRENCE AU RETOUR</th>
+                <th class="text-center">OBSERVATION</th>
+            </tr>
+            {% set nbLines = 0 %}
+            {% for data in datas %}
+                {% if not data.is_st_ref %}
+                    <tr class="item-row">
+                        <td><textarea>{{ data.composantRef }}</textarea></td>
+                        <td><textarea>{{ data.description }}</textarea></td>
+                        <td><textarea>{{ data.quantityPerUnit * data.produitFiniQuantity }}</textarea></td>
+                        <td><textarea>{{ nbLines == 0 ? data.produitFini : '' }}</textarea></td>
+                        <td><textarea></textarea></td>
+                    </tr>
+                    {% set nbLines = nbLines + 1 %}
+                {% endif %}
+            {% endfor %}
+
+            {% for i in nbLines..14 %}
+                <tr class="item-row">
+                    <td><textarea></textarea></td>
+                    <td><textarea></textarea></td>
+                    <td><textarea></textarea></td>
+                    <td><textarea></textarea></td>
+                    <td><textarea></textarea></td>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+    <div style="clear:both"></div>
+
+    <div id="footer">
+        <h4 class="font-weight-bolder mt-2">NB. - Une sortie par RM solde l'affectation correspondante</h4>
+        <table width="100%">
+            <tr>
+                <th>VISA DU RESPONSABLE</th>
+                <th>MATÉRIEL REMIS LE</th>
+                <th>VISA DU FAÇONNIER</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <p></p><br><br>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <div class="w-50">Nombre d'articles :</div>
+                        <div class="d-inline w-50"><textarea style="height: 20px;font-weight: bold;">{{ nbLines }}</textarea></div>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+
+</html>
