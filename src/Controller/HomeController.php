@@ -93,38 +93,40 @@ class HomeController extends AbstractController
             }
         }
 
-        $supplier = $this->em->getRepository(Supplier::class)->findBy(['ref' => $supplierRef]);
-        if (!is_object($supplier)){
-            $supplier = [];
-            $response = $this->client->request(
-                'GET',
-                "http://sicame.sicame.com:36001/SystemLink/servlet/SystemLinkServlet?SystemLinkRequest=" . "<?xml version='1.0' encoding='UTF-8'?><!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'><System-Link><Login userId='". $powerlinkParams['userId'] ."' password='". $powerlinkParams['password'] ."' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=II, com.pjx.cas.domain.SystemName=SICAME.SICAME.COM, com.pjx.cas.user.LanguageId=fr'/><Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'><QueryList name='queryListFournisseur_remisemat' domainClass='com.mapics.pm.Vendor' includeMetaData='true' maxReturned='1'><Pql><![CDATA[SELECT vendor,name,address1,address4City,postalCode,country WHERE (vendor = '". $supplierRef ."')]]></Pql></QueryList></Request></System-Link>", [
-                    'headers' => ['Content-Type' => 'application/xml']
-                ]
-            );
-            $responseArray = $this->functions->transformXmlResponseToArray($response);
+        if ($supplierRef){
+            $supplier = $this->em->getRepository(Supplier::class)->findBy(['ref' => $supplierRef]);
+            if (!is_object($supplier)){
+                $supplier = [];
+                $response = $this->client->request(
+                    'GET',
+                    "http://sicame.sicame.com:36001/SystemLink/servlet/SystemLinkServlet?SystemLinkRequest=" . "<?xml version='1.0' encoding='UTF-8'?><!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'><System-Link><Login userId='". $powerlinkParams['userId'] ."' password='". $powerlinkParams['password'] ."' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=II, com.pjx.cas.domain.SystemName=SICAME.SICAME.COM, com.pjx.cas.user.LanguageId=fr'/><Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'><QueryList name='queryListFournisseur_remisemat' domainClass='com.mapics.pm.Vendor' includeMetaData='true' maxReturned='1'><Pql><![CDATA[SELECT vendor,name,address1,address4City,postalCode,country WHERE (vendor = '". $supplierRef ."')]]></Pql></QueryList></Request></System-Link>", [
+                        'headers' => ['Content-Type' => 'application/xml']
+                    ]
+                );
+                $responseArray = $this->functions->transformXmlResponseToArray($response);
 
-            $columnsKeys = count($responseArray) > 0 ? $responseArray[0] : null;
+                $columnsKeys = count($responseArray) > 0 ? $responseArray[0] : null;
 
-            if ($columnsKeys) {
-                $supplier = [
-                    'ref' => $responseArray[0][array_search('vendor', array_column($columnsKeys, 'key'))]['value'],
-                    'nom' => $responseArray[0][array_search('name', array_column($columnsKeys, 'key'))]['value'],
-                    'address' => $responseArray[0][array_search('address1', array_column($columnsKeys, 'key'))]['value'],
-                    'postalCode' => $responseArray[0][array_search('postalCode', array_column($columnsKeys, 'key'))]['value'],
-                    'city' => $responseArray[0][array_search('address4City', array_column($columnsKeys, 'key'))]['value'],
-                    'country' => $responseArray[0][array_search('country', array_column($columnsKeys, 'key'))]['value'],
-                ];
-                if ($supplier['country']){
-                    $response = $this->client->request(
-                        'GET',
-                        "http://sicame.sicame.com:36001/SystemLink/servlet/SystemLinkServlet?SystemLinkRequest=" . "<?xml version='1.0' encoding='UTF-8'?><!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'><System-Link><Login userId='". $powerlinkParams['userId'] ."' password='". $powerlinkParams['password'] ."' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=II, com.pjx.cas.domain.SystemName=SICAME.SICAME.COM, com.pjx.cas.user.LanguageId=fr'/><Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'><QueryObject name='queryObject_Pays_Valeurpardéfaut' domainClass='com.mapics.cbo.CountryCodeFile' includeMetaData='true'><Pql><![CDATA[SELECT name WHERE country = '". $supplier['country'] ."']]></Pql></QueryObject></Request></System-Link>", [
-                            'headers' => ['Content-Type' => 'application/xml']
-                        ]
-                    );
-                    $responseArray = $this->functions->transformXmlResponseToArray($response, 'QueryObject');
-                    $columnsKeys = count($responseArray) > 0 ? $responseArray[0] : null;
-                    $supplier['country'] = $responseArray[0][array_search('name', array_column($columnsKeys, 'key'))]['value'];
+                if ($columnsKeys) {
+                    $supplier = [
+                        'ref' => $responseArray[0][array_search('vendor', array_column($columnsKeys, 'key'))]['value'],
+                        'nom' => $responseArray[0][array_search('name', array_column($columnsKeys, 'key'))]['value'],
+                        'address' => $responseArray[0][array_search('address1', array_column($columnsKeys, 'key'))]['value'],
+                        'postalCode' => $responseArray[0][array_search('postalCode', array_column($columnsKeys, 'key'))]['value'],
+                        'city' => $responseArray[0][array_search('address4City', array_column($columnsKeys, 'key'))]['value'],
+                        'country' => $responseArray[0][array_search('country', array_column($columnsKeys, 'key'))]['value'],
+                    ];
+                    if ($supplier['country']){
+                        $response = $this->client->request(
+                            'GET',
+                            "http://sicame.sicame.com:36001/SystemLink/servlet/SystemLinkServlet?SystemLinkRequest=" . "<?xml version='1.0' encoding='UTF-8'?><!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'><System-Link><Login userId='". $powerlinkParams['userId'] ."' password='". $powerlinkParams['password'] ."' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=II, com.pjx.cas.domain.SystemName=SICAME.SICAME.COM, com.pjx.cas.user.LanguageId=fr'/><Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'><QueryObject name='queryObject_Pays_Valeurpardéfaut' domainClass='com.mapics.cbo.CountryCodeFile' includeMetaData='true'><Pql><![CDATA[SELECT name WHERE country = '". $supplier['country'] ."']]></Pql></QueryObject></Request></System-Link>", [
+                                'headers' => ['Content-Type' => 'application/xml']
+                            ]
+                        );
+                        $responseArray = $this->functions->transformXmlResponseToArray($response, 'QueryObject');
+                        $columnsKeys = count($responseArray) > 0 ? $responseArray[0] : null;
+                        $supplier['country'] = $responseArray[0][array_search('name', array_column($columnsKeys, 'key'))]['value'];
+                    }
                 }
             }
         }

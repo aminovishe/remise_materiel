@@ -14,6 +14,18 @@
             display:none;
         }
     </style>
+
+    <style type="text/css">
+        #btn-print{
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            padding: 5px;
+            font-size: 13px;
+            font-weight: bold;
+            background-color: bisque;
+        }
+    </style>
 </head>
 
 <body>
@@ -56,7 +68,7 @@
                 <th>REMISE DE MATERIEL :</th>
             </tr>
             <tr>
-                <th><h3 class="font-weight-bolder text-center">N° {{ numRMST }}</h3></th>
+                <th><textarea class="w-100 font-weight-bolder" style="text-align: center !important; font-size: 2.2em !important;">N° {{ numRMST }}</textarea></th>
             </tr>
             <tr>
                 <th>DOSSIER DE FABRICATION :</th>
