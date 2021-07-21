@@ -10,13 +10,13 @@
     <link href="{{ asset('assets/css/print-pdf.css') }}" type="text/css" rel="stylesheet"/>
 
     <style type="text/css" media="print">
-        #btn-print{
-            display:none;
+        #btn-print {
+            display: none;
         }
     </style>
 
     <style type="text/css">
-        #btn-print{
+        #btn-print {
             position: absolute;
             top: 3px;
             left: 3px;
@@ -34,7 +34,8 @@
 
 <div id="page-wrap">
 
-    <div id="header" style="display: flex; flex-direction: row; justify-content: start; align-items: start; flex-wrap: wrap;">
+    <div id="header"
+         style="display: flex; flex-direction: row; justify-content: start; align-items: start; flex-wrap: wrap;">
         <table width="60%" style="height: 305px;">
             <tr>
                 <th>EMETEUR :</th>
@@ -52,13 +53,15 @@
                 </td>
             </tr>
             <tr>
-                <th>DESTINATAIRE : </th>
+                <th>DESTINATAIRE :</th>
             </tr>
             <tr>
                 <td>
                     <div class="text-center">
-                        <textarea class="w-100 font-weight-bolder" style="text-align: center !important; font-size: 1.8em !important;height: 2em !important;">{{ supplier.nom }}</textarea>
-                        <textarea class="w-100" style="text-align: center !important;font-size: 1.4em !important;">{{ supplier.address }}, {{ supplier.postalCode }} {{ supplier.city }}{{ supplier.country ? ", " ~ supplier.country : "" }}</textarea>
+                        <textarea class="w-100 font-weight-bolder"
+                                  style="text-align: center !important; font-size: 1.8em !important;height: 2em !important;">{{ supplier is defined ? supplier.nom : "" }}</textarea>
+                        <textarea class="w-100"
+                                  style="text-align: center !important;font-size: 1.4em !important;">{% if supplier is defined %}{{ supplier.address }}, {{ supplier.postalCode }} {{ supplier.city }}{{ supplier.country ? ", " ~ supplier.country : "" }}{% endif %}</textarea>
                     </div>
                 </td>
             </tr>
@@ -68,19 +71,23 @@
                 <th>REMISE DE MATERIEL :</th>
             </tr>
             <tr>
-                <th><textarea class="w-100 font-weight-bolder" style="text-align: center !important; font-size: 2.2em !important;">N° {{ numRMST }}</textarea></th>
+                <th><textarea class="w-100 font-weight-bolder"
+                              style="text-align: center !important; font-size: 2.2em !important;">N° {{ numRMST }}</textarea>
+                </th>
             </tr>
             <tr>
                 <th>DOSSIER DE FABRICATION :</th>
             </tr>
             <tr>
-                <th><textarea style="text-align: center !important; font-size: 2em !important;height: 2em !important;" class="w-100">{{ numOf }}</textarea></th>
+                <th><textarea style="text-align: center !important; font-size: 2em !important;height: 2em !important;"
+                              class="w-100">{{ numOf is defined ? numOf : "" }}</textarea></th>
             </tr>
             <tr>
                 <th>COMMANDE FOURNISSEUR :</th>
             </tr>
             <tr>
-                <th><textarea style="text-align: center !important; font-size: 2em !important;height: 2em !important;" class="w-100">P554221</textarea></th>
+                <th><textarea style="text-align: center !important; font-size: 2em !important;height: 2em !important;"
+                              class="w-100"></textarea></th>
             </tr>
         </table>
         <table width="100%">
@@ -90,9 +97,15 @@
                 <th>OPERATION A EFFECTUER</th>
             </tr>
             <tr>
-                <td><textarea class="w-100" style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">GP</textarea></td>
-                <td><textarea class="w-100" style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">{{ "now" | date('d/m/Y') }}</textarea></td>
-                <td><textarea class="w-100" style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">Sous-traitance (ST)</textarea></td>
+                <td><textarea class="w-100"
+                              style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">{{ numOf is defined ? "GP" : "" }}</textarea>
+                </td>
+                <td><textarea class="w-100"
+                              style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">{{ "now" | date('d/m/Y') }}</textarea>
+                </td>
+                <td><textarea class="w-100"
+                              style="text-align: center !important; font-size: 1.7em !important;height: 2em !important;">{{ numOf is defined ? "Sous-traitance (ST)" : "" }}</textarea>
+                </td>
             </tr>
         </table>
     </div>
@@ -109,19 +122,20 @@
                 <th class="text-center">OBSERVATION</th>
             </tr>
             {% set nbLines = 0 %}
-            {% for data in datas %}
-                {% if not data.is_st_ref %}
-                    <tr class="item-row">
-                        <td><textarea >{{ data.composantRef }}</textarea></td>
-                        <td><textarea class="text-left">{{ data.description }}</textarea></td>
-                        <td><textarea>{{ data.quantityPerUnit * data.produitFiniQuantity }}</textarea></td>
-                        <td><textarea>{{ nbLines == 0 ? data.produitFini : '' }}</textarea></td>
-                        <td><textarea></textarea></td>
-                    </tr>
-                    {% set nbLines = nbLines + 1 %}
-                {% endif %}
-            {% endfor %}
-
+            {% if datas is defined %}
+                {% for data in datas %}
+                    {% if not data.is_st_ref %}
+                        <tr class="item-row">
+                            <td><textarea>{{ data.composantRef }}</textarea></td>
+                            <td><textarea class="text-left">{{ data.description }}</textarea></td>
+                            <td><textarea>{{ data.quantityPerUnit * data.produitFiniQuantity }}</textarea></td>
+                            <td><textarea>{{ nbLines == 0 ? data.produitFini : '' }}</textarea></td>
+                            <td><textarea></textarea></td>
+                        </tr>
+                        {% set nbLines = nbLines + 1 %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
             {% for i in nbLines..6 %}
                 <tr class="item-row">
                     <td><textarea></textarea></td>
@@ -151,7 +165,9 @@
                     <p></p>
                     <div class="d-flex flex-row justify-content-between align-items-center">
                         <div class="w-50">Nombre d'articles :</div>
-                        <div class="d-inline w-50"><textarea class="text-left" style="height: 20px;font-weight: bold;">{{ nbLines }}</textarea></div>
+                        <div class="d-inline w-50"><textarea class="text-left"
+                                                             style="height: 20px;font-weight: bold;">{{ datas is defined ? nbLines : "" }}</textarea>
+                        </div>
                     </div>
                 </td>
                 <td></td>

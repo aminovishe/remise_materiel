@@ -43,13 +43,20 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/generate_remise_materiel/{numOF}", name="generate_remise_materiel")
+     * @Route("/generate_remise_materiel/{numOF}", defaults={"numOF" = null}, name="generate_remise_materiel")
      */
-    public function generateRemiseMateriel($numOF): Response
+    public function generateRemiseMateriel($numOF = null): Response
     {
-        $numOF = strtoupper($numOF);
         $powerlinkParams = $this->updateAppParams->getParamByKey('powerlink');
         $lastRMST = (int)$this->updateAppParams->getParamByKey('lastRMST');
+
+        if ($numOF === null){
+            return $this->render('print/remise_materiel.html.twig',[
+                'numRMST' => $lastRMST,
+            ]);
+        }
+
+        $numOF = strtoupper($numOF);
 
         $response = $this->client->request(
             'GET',
