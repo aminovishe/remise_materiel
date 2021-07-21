@@ -165,13 +165,20 @@
 
 <script>
     $(document).on("click", "#btn-print", function () {
-        $('#page-wrap.page2').remove();
-        var elem = $("#page-wrap");
-        var elem2 = $(elem).clone(true);
-        $(elem2).addClass('page2');
-        $('body').append(elem2);
+        $.ajax({
+            url: '{{ path('increment_num_RMST') }}',
+            method: "GET",
+            success: function (response) {
+                $('#page-wrap.page2').remove();
+                var elem = $("#page-wrap");
+                var elem2 = $(elem).clone(true);
+                $(elem2).addClass('page2');
+                $('body').append(elem2);
 
-        window.print();
+                window.print();
+            }
+        });
+
     });
 </script>
 

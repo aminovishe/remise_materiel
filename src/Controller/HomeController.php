@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Alert;
 use App\Entity\Supplier;
 use App\Service\Functions;
 use App\Service\UpdateAppParams;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -131,13 +134,26 @@ class HomeController extends AbstractController
             }
         }
 
-        $this->updateAppParams->setParamByKey('lastRMST', $lastRMST + 1);
-
         return $this->render('print/remise_materiel.html.twig',[
             'numOf' => $numOF,
             'datas' => $datas,
             'supplier' => $supplier,
             'numRMST' => $numRMST,
         ]);
+    }
+
+    /**
+     * @Route("/increment_num_RMST", name="increment_num_RMST")
+     */
+    public function incrementNumRMST(Request $request)
+    {
+        $lastRMST = (int)$this->updateAppParams->getParamByKey('lastRMST');
+        $this->updateAppParams->setParamByKey('lastRMST', $lastRMST + 1);
+
+        return new JsonResponse(
+            array(
+                'status' => 200
+            )
+        );
     }
 }
