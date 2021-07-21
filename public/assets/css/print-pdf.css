@@ -8,6 +8,9 @@ body {
     font-size: 9px !important;
     font-family: Arial, sans-serif, serif;
     background-color: white;
+}
+
+#page{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
