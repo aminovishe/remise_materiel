@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Alert;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -24,12 +23,6 @@ class Functions
         $domDocument->loadXML($xmlstr);
 
         if ($domDocument->getElementsByTagName('LoginResponse')[0]->attributes[0]->nodeValue === "false"){
-            $alert = new Alert();
-            $alert->setMessage("Merci de mettre à jour le mot de passe Infor XA Power-Link");
-            $alert->setPath($this->router->generate('update_password_powerlink'));
-            $this->em->persist($alert);
-            $this->em->flush();
-
             return null;
         }
 

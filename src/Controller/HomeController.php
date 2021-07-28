@@ -67,7 +67,7 @@ class HomeController extends AbstractController
         $responseArray = $this->functions->transformXmlResponseToArray($response);
 
         if ($responseArray === null){
-            $this->addFlash('error','Numéro OF invalide !!');
+            $this->addFlash('error', 'Une erreur est survenue.<br><b>Probablement vous devez changer le Mot de Passe Power-Link</b>');
             return $this->redirectToRoute('home');
         }
 
